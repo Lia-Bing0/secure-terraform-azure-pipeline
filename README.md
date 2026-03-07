@@ -129,7 +129,7 @@ OIDC federation is configured via Entra ID federated credentials and `azure/logi
 
 ### Federated Identity Credential (Trust Boundary)
 
-The file [`federated-credential-main-branch.json`](bootstrap\entra\federated-credential-main-branch.json) defines the workload identity trust relationship between GitHub Actions and Azure (Entra ID).
+The file [`federated-credential-main-branch.json`](bootstrap/entra/federated-credential-main-branch.json) defines the workload identity trust relationship between GitHub Actions and Azure (Entra ID).
 
 - **Issuer**: GitHub OIDC provider (`https://token.actions.githubusercontent.com`)
 - **Subject**: Restricted to `repo:Lia-Bing0/secure-terraform-azure-pipeline:ref:refs/heads/main`
