@@ -76,12 +76,27 @@ Security scanning is automated in CI; insecure configuration changes fail the wo
 
 ## Demonstration: Fail → Fix → Pass
 
-- **Fail example**: A commit downgrades TLS or enables public blob access, triggering Checkov findings and failing CI.
-- **Remediation**: Configuration is hardened to enforce TLS1.2, HTTPS-only traffic, and restricted public access.
-- **Result**: Subsequent commit passes all Terraform and security checks.
+### Policy Gate Failure
 
-- ![Checkov Failure](docs/images/10-TerraformCheckovFail.png)
-- ![Pipeline Success](docs/images/11-TerraformCheckovSuccess.png)
+An intentionally insecure Terraform configuration was introduced in a pull request to validate that the CI pipeline blocks noncompliant Infrastructure-as-Code changes before merge.
+
+![PR Policy Gate Failure](docs/images/15-pr-checkov-fail.png)
+
+### Security Scan Evidence
+
+Checkov detected policy violations related to public blob access in the storage account configuration.
+
+![Checkov Policy Violation](docs/images/16-checkov-policy-failure.png)
+
+### Remediation
+
+The insecure setting enabling public blob access was corrected.
+
+```hcl
+allow_nested_items_to_be_public = false
+```
+
+![Pipeline Success](docs/images/17-pr-checkov-pass.png)
 
 ## Security Enforcement Evidence
 
