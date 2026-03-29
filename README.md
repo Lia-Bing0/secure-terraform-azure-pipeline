@@ -58,17 +58,26 @@ A failing Checkov check causes the workflow to exit non-zero, enforcing security
 
 ## Security Controls Enforced
 
-- **HTTPS-only + TLS1.2**: `https_traffic_only_enabled = true` and `min_tls_version = "TLS1_2"`.
-- **Disallow public/anonymous blob access**: `allow_nested_items_to_be_public = false`.
-- **Additional storage hardening implemented**
-  - **AzureAD-only authentication**
-    - `shared_access_key_enabled = false`
-  - **Temporary public network access**
-    - `public_network_access_enabled = true`  
+- **HTTPS-only + TLS1.2**
+  - `https_traffic_only_enabled = true`
+  - `min_tls_version = "TLS1_2"`
 
-	This is a deliberate design tradeoff required for GitHub-hosted runners, which must access the Terraform backend over the public Azure endpoint.
+- **Disallow public/anonymous blob access**
+  - `allow_nested_items_to_be_public = false`
 
-	In production environments this would typically be replaced with a **Private Endpoint + self-hosted runner** to eliminate public network exposure.
+- **Azure AD-only authentication**
+  - `shared_access_key_enabled = false`
+
+- **Temporary public network access (intentional design tradeoff)**
+  - `public_network_access_enabled = true`
+
+  This is intentionally enabled to allow GitHub-hosted runners to access the Terraform backend.
+
+  In a production environment, this would be replaced with:
+  - Azure Private Endpoint
+  - Self-hosted GitHub runner inside the VNet
+
+  This tradeoff is documented and tracked as part of the next hardening phase.
 
 - **Geo-redundant replication (GRS)**
 
