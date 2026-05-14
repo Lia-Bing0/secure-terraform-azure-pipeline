@@ -61,7 +61,7 @@ jobs:
         working-directory: .
 
       - name: Run Checkov JSON scan
-        run: checkov -d infra --output json > reports/checkov-report.json
+        run: checkov -d infra --output json > reports/checkov-report.json || true
         working-directory: .
 
       - name: Run Python security gate
