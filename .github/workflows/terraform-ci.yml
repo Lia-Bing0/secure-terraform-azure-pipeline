@@ -54,10 +54,14 @@ jobs:
         if: false
         run: terraform plan -no-color
 
-      # Keep static IaC security scanning active even while cloud-dependent steps are temporarily disabled
-      - name: Run Checkov (IaC security scan)
-        uses: bridgecrewio/checkov-action@v12
-        with:
-          directory: infra
-          framework: terraform
-          skip_check: CKV2_AZURE_33,CKV2_AZURE_1,CKV2_AZURE_38,CKV_AZURE_33,CKV2_AZURE_41,CKV_AZURE_59
+      - name: Install Checkov
+        run: pip install checkov
+        working-directory: .
+
+      - name: Run Checkov JSON scan
+        run: checkov -d infra --output json > reports/checkov-report.json
+        working-directory: .
+
+      - name: Run Python security gate
+        run: python scripts/security_gate.py
+        working-directory: .

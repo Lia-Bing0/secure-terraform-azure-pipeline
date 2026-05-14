@@ -4,4 +4,5 @@
 terraform.tfvars
 *.tfvars
 crash.log
+reports/checkov-report.json
 Notes
