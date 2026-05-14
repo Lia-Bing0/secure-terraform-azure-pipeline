@@ -2,7 +2,9 @@ name: terraform-ci
 
 on:
   push:
-    branches: [ "main" ]
+     branches:
+      - main
+      - feature/python-security-gate
   pull_request:
 
 jobs:
