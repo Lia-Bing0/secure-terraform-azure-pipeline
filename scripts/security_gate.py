@@ -65,16 +65,13 @@ def main():
 
     if checkov_failed_checks:
         for finding in checkov_failed_checks:
-          markdown.extend([
-            "## Trivy IaC Findings",
-            "",
-            f"- Total findings: {len(trivy_findings)}",
-            f"- Critical: {trivy_critical}",
-            f"- High: {trivy_high}",
-            f"- Medium: {trivy_medium}",
-            f"- Low: {trivy_low}",
-            "",
-        ])
+            markdown.extend([
+                f"### {finding.get('check_id')} - {finding.get('check_name')}",
+                f"- Resource: `{finding.get('resource')}`",
+                f"- File: `{finding.get('repo_file_path')}`",
+                f"- Guideline: {finding.get('guideline')}",
+                "",
+            ])
     else:
         markdown.append("No Checkov failed findings detected.")
         markdown.append("")
@@ -83,6 +80,10 @@ def main():
         "## Trivy IaC Findings",
         "",
         f"- Total findings: {len(trivy_findings)}",
+        f"- Critical: {trivy_critical}",
+        f"- High: {trivy_high}",
+        f"- Medium: {trivy_medium}",
+        f"- Low: {trivy_low}",
         "",
     ])
 
@@ -99,6 +100,8 @@ def main():
     else:
         markdown.append("No Trivy misconfiguration findings detected.")
         markdown.append("")
+
+
 
     SUMMARY_REPORT.write_text("\n".join(markdown), encoding="utf-8")
 
