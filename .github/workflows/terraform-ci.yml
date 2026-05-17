@@ -5,6 +5,7 @@ on:
      branches:
       - main
       - feature/python-security-gate
+      - feature/trivy-security-gate
   pull_request:
 
 jobs:
