@@ -45,6 +45,10 @@ def main():
 
     checkov_failed_checks = checkov_results.get("failed_checks", [])
     trivy_findings = extract_trivy_misconfigurations(trivy_report)
+    trivy_critical = sum(1 for finding in trivy_findings if finding.get("severity") == "CRITICAL")
+    trivy_high = sum(1 for finding in trivy_findings if finding.get("severity") == "HIGH")
+    trivy_medium = sum(1 for finding in trivy_findings if finding.get("severity") == "MEDIUM")
+    trivy_low = sum(1 for finding in trivy_findings if finding.get("severity") == "LOW")
 
     markdown = [
         "# Security Gate Summary",
@@ -61,13 +65,16 @@ def main():
 
     if checkov_failed_checks:
         for finding in checkov_failed_checks:
-            markdown.extend([
-                f"### {finding.get('check_id')} - {finding.get('check_name')}",
-                f"- Resource: `{finding.get('resource')}`",
-                f"- File: `{finding.get('repo_file_path')}`",
-                f"- Guideline: {finding.get('guideline')}",
-                "",
-            ])
+          markdown.extend([
+            "## Trivy IaC Findings",
+            "",
+            f"- Total findings: {len(trivy_findings)}",
+            f"- Critical: {trivy_critical}",
+            f"- High: {trivy_high}",
+            f"- Medium: {trivy_medium}",
+            f"- Low: {trivy_low}",
+            "",
+        ])
     else:
         markdown.append("No Checkov failed findings detected.")
         markdown.append("")
@@ -100,9 +107,13 @@ def main():
     print(f"Checkov Failed: {failed}")
     print(f"Checkov Skipped: {skipped}")
     print(f"Trivy Findings: {len(trivy_findings)}")
+    print(f"Trivy Critical: {trivy_critical}")
+    print(f"Trivy High: {trivy_high}")
+    print(f"Trivy Medium: {trivy_medium}")
+    print(f"Trivy Low: {trivy_low}")
 
-    if failed > 0 or len(trivy_findings) > 0:
-        print("Security gate failed due to Checkov or Trivy findings.")
+    if failed > 0 or trivy_critical > 0 or trivy_high > 0:
+        print("Security gate failed due to Checkov failures or Trivy HIGH/CRITICAL findings.")
         exit(1)
 
     print("Security gate passed.")

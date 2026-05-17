@@ -8,25 +8,37 @@
 
 ## Checkov Failed Findings
 
-### CKV_AZURE_33 - Ensure Storage logging is enabled for Queue service for read, write and delete requests
-- Resource: `azurerm_storage_account.sa`
-- File: `/infra/main.tf`
-- Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-logging-policies/enable-requests-on-storage-logging-for-queue-service
+## Trivy IaC Findings
 
-### CKV2_AZURE_33 - Ensure storage account is configured with private endpoint
-- Resource: `azurerm_storage_account.sa`
-- File: `/infra/main.tf`
-- Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azure-2-33
+- Total findings: 3
+- Critical: 1
+- High: 0
+- Medium: 2
+- Low: 0
 
-### CKV2_AZURE_38 - Ensure soft-delete is enabled on Azure storage account
-- Resource: `azurerm_storage_account.sa`
-- File: `/infra/main.tf`
-- Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azure-2-38
+## Trivy IaC Findings
 
-### CKV2_AZURE_1 - Ensure storage for critical data are encrypted with Customer Managed Key
-- Resource: `azurerm_storage_account.sa`
-- File: `/infra/main.tf`
-- Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/ensure-storage-for-critical-data-are-encrypted-with-customer-managed-key
+- Total findings: 3
+- Critical: 1
+- High: 0
+- Medium: 2
+- Low: 0
+
+## Trivy IaC Findings
+
+- Total findings: 3
+- Critical: 1
+- High: 0
+- Medium: 2
+- Low: 0
+
+## Trivy IaC Findings
+
+- Total findings: 3
+- Critical: 1
+- High: 0
+- Medium: 2
+- Low: 0
 
 ## Trivy IaC Findings
 
