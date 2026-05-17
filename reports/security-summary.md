@@ -6,7 +6,7 @@
 - Failed checks: 4
 - Skipped checks: 1
 
-## Failed Findings
+## Checkov Failed Findings
 
 ### CKV_AZURE_33 - Ensure Storage logging is enabled for Queue service for read, write and delete requests
 - Resource: `azurerm_storage_account.sa`
@@ -27,3 +27,25 @@
 - Resource: `azurerm_storage_account.sa`
 - File: `/infra/main.tf`
 - Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/ensure-storage-for-critical-data-are-encrypted-with-customer-managed-key
+
+## Trivy IaC Findings
+
+- Total findings: 3
+
+### AZU-0012 - The default action on Storage account network rules should be set to deny
+- Severity: `CRITICAL`
+- Resource: `azurerm_storage_account.sa`
+- File: `main.tf`
+- Resolution: Set network rules to deny
+
+### AZU-0057 - Storage account should have logging enabled
+- Severity: `MEDIUM`
+- Resource: `azurerm_storage_account.sa`
+- File: `main.tf`
+- Resolution: Enable logging for at least one storage service (Queue, Table, or Blob)
+
+### AZU-0061 - Storage account should have infrastructure encryption enabled
+- Severity: `MEDIUM`
+- Resource: `azurerm_storage_account.sa`
+- File: `main.tf`
+- Resolution: Enable infrastructure encryption for storage account

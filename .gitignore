@@ -4,5 +4,8 @@
 terraform.tfvars
 *.tfvars
 crash.log
-reports/checkov-report.json
 Notes
+
+# Generated security scan artifacts
+reports/checkov-report.json
+reports/trivy-report.json
