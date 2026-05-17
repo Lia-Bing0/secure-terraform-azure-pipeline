@@ -2,7 +2,7 @@ name: terraform-ci
 
 on:
   push:
-     branches:
+    branches:
       - main
       - feature/python-security-gate
       - feature/trivy-security-gate
@@ -64,6 +64,21 @@ jobs:
       - name: Run Checkov JSON scan
         run: checkov -d infra --output json > reports/checkov-report.json || true
         working-directory: .
+
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo gpg --dearmor -o /usr/share/keyrings/trivy.gpg
+          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install -y trivy
+        working-directory: .
+
+      - name: Run Trivy IaC scan
+        run: trivy config infra --format json --output reports/trivy-report.json || true
+        working-directory: .
+
 
       - name: Run Python security gate
         run: python scripts/security_gate.py
