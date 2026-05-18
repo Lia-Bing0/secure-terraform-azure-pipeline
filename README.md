@@ -185,6 +185,45 @@ terraform destroy
 - Enable **diagnostic settings to Log Analytics / Microsoft Sentinel**
 - Add **Azure Policy / Defender for Cloud integration**
   
+## Python Security Gate
+
+This pipeline integrates automated IaC security scanning with a small Python orchestration layer that parses scanner JSON outputs and enforces severity-aware CI gates.
+
+```mermaid
+flowchart LR
+	Dev[Developer Commit / PR] --> GH[GitHub Actions]
+	GH --> TF[Terraform plan + Checkov scan]
+	GH --> TR[Trivy IaC scan]
+	TF --> CJ[Checkov JSON report]
+	TR --> TJ[Trivy JSON report]
+	CJ --> ORC[Python Security Gate (orchestrator)]
+	TJ --> ORC
+	ORC --> ENF{Enforcement}
+	ENF -->|Fail| BLOCK[CI: block merge]
+	ENF -->|Pass| CONT[Continue pipeline]
+	ORC --> ART[Upload artifacts: security-summary.md, checkov-report.json, trivy-report.json]
+```
+
+### Key Features
+
+- **Checkov integration**: policy-as-code scanning for Terraform with machine-readable JSON output.
+- **Trivy IaC scanning**: complementary misconfiguration detection with JSON results.
+- **Python orchestration layer**: parses both JSON reports, summarizes findings, and applies severity-aware rules.
+- **Artifact publishing**: uploads `security-summary.md`, `checkov-report.json`, and `trivy-report.json` to the GitHub Actions run for auditability.
+
+### Pipeline Enforcement Logic
+
+- The Python gate parses the `checkov` and `trivy` JSON outputs produced during the workflow.
+- The pipeline fails the CI run if any Checkov policy check is reported as a hard failure.
+- The pipeline also fails if Trivy reports findings with severity `HIGH` or `CRITICAL`.
+- When checks pass, the workflow continues; all JSON reports and a concise `security-summary.md` are uploaded as run artifacts.
+
+Why upload JSON reports as artifacts (not commit them):
+
+- JSON scanner outputs are build artifacts tied to a specific run; committing them would clutter the repository history.
+- Reports can contain environment-specific metadata or transient details and may leak sensitive information if committed.
+- Artifacts provide run-level traceability, retention, and controlled access without inflating source control.
+
 ## Why this matters
 
 - Shifts cloud security left by enforcing controls pre-deployment.
