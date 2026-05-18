@@ -204,6 +204,8 @@ flowchart LR
 	ORC --> ART[Upload artifacts: security-summary.md, checkov-report.json, trivy-report.json]
 ```
 
+![Security Pipeline Workflow](docs/images/20-security-pipeline-workflow.png)
+
 ### Key Features
 
 - **Checkov integration**: policy-as-code scanning for Terraform with machine-readable JSON output.
@@ -216,7 +218,14 @@ flowchart LR
 - The Python gate parses the `checkov` and `trivy` JSON outputs produced during the workflow.
 - The pipeline fails the CI run if any Checkov policy check is reported as a hard failure.
 - The pipeline also fails if Trivy reports findings with severity `HIGH` or `CRITICAL`.
+  
+![Python Security Gate Failure](docs/images/18-python-security-gate-failure.png)
+
 - When checks pass, the workflow continues; all JSON reports and a concise `security-summary.md` are uploaded as run artifacts.
+
+### Security Gate Output
+
+![Trivy Severity Summary](docs/images/22-trivy-severity-summary.png)
 
 Why upload JSON reports as artifacts (not commit them):
 
