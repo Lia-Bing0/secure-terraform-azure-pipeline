@@ -223,15 +223,27 @@ flowchart LR
 
 - When checks pass, the workflow continues; all JSON reports and a concise `security-summary.md` are uploaded as run artifacts.
 
-### Security Gate Output
+### Clean Security Gate Pass
 
-![Trivy Severity Summary](docs/images/22-trivy-severity-summary.png)
+![Clean GitHub Actions Security Pass](docs/images/28-clean-github-actions-security-pass.png)
 
-Why upload JSON reports as artifacts (not commit them):
+The pipeline now successfully passes:
 
-- JSON scanner outputs are build artifacts tied to a specific run; committing them would clutter the repository history.
-- Reports can contain environment-specific metadata or transient details and may leak sensitive information if committed.
-- Artifacts provide run-level traceability, retention, and controlled access without inflating source control.
+- Checkov policy enforcement
+- Trivy IaC scanning
+- Python-based orchestration enforcement
+
+Documented exceptions are intentionally tracked for:
+
+- future private endpoint implementation
+- future customer-managed key (CMK) integration
+
+### Why upload JSON reports as artifacts instead of committing them?
+
+- Scanner outputs are generated CI artifacts tied to a specific workflow run.
+- Keeping reports out of Git prevents unnecessary repository noise and history growth.
+- Artifacts provide run-level traceability while maintaining a clean source-controlled codebase.
+- This mirrors how enterprise CI/CD and security pipelines typically manage scan outputs.
 
 ## Why this matters
 
