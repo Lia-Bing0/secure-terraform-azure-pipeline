@@ -174,6 +174,8 @@ This pipeline integrates automated IaC security scanning with a small Python orc
 
 ![Mermaid Diagram](docs/images/mermaid-diagram.png)
 
+---
+
 ![Security Pipeline Workflow](docs/images/20-security-pipeline-workflow.png)
 
 ### Key Features
