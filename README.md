@@ -8,36 +8,16 @@ This project demonstrates practical cloud security controls by blocking insecure
 
 The repository includes Terraform for infrastructure provisioning, GitHub Actions for pipeline enforcement, and PowerShell bootstrap automation for Entra ID federation and Azure RBAC setup.
 
+The workflow combines Terraform, GitHub Actions, Checkov, Trivy, and a custom Python orchestration layer to enforce severity-aware Infrastructure-as-Code security gates before deployment.
+
 ## Key Outcomes
 
-- Built a CI pipeline that runs Terraform checks (`fmt`, `init`, `validate`, `plan`) on every push to `main` and on every pull request.
-- Integrated Checkov as a security gate to fail builds on misconfigured Azure resources.
-- Hardened Azure Storage baseline directly in Terraform (HTTPS-only, TLS 1.2 minimum, no public access, no shared keys).
-- Demonstrated fail → remediate → pass workflow to validate security enforcement behavior.
-- Implemented GitHub → Azure OIDC federation (no long-lived client secrets).
-- Configured Entra ID federated credentials with scoped RBAC.
-- Enabled AzureAD authentication for Terraform backend state.
-
-## Architecture
-
-```text
-Developer Commit / PR
-	|
-	v
-GitHub Actions: .github/workflows/terraform-ci.yml
-	|
-	+--> terraform fmt -check -recursive
-	+--> terraform init
-	+--> terraform validate
-	+--> terraform plan
-	+--> Checkov scan (policy gate)
-		  |
-		  +--> PASS: merge/deploy flow can continue
-		  +--> FAIL: pipeline blocks insecure change
-	|
-	v
-Azure Resource Group + Hardened Storage Account
-```
+- Built a secretless, least-privilege CI/CD pipeline using GitHub OIDC federation to Azure.
+- Implemented multi-tool IaC security enforcement using Checkov, Trivy, and a custom Python orchestration layer.
+- Enforced severity-aware CI gating with centralized security summary generation and artifact publishing.
+- Hardened Azure Storage configuration with infrastructure encryption, soft delete protection, Azure Monitor diagnostics, and TLS enforcement.
+- Demonstrated a remediation-driven DevSecOps workflow from policy failure to clean passing security gate.
+- Configured Entra ID federated credentials with scoped RBAC and AzureAD-authenticated Terraform backend access.
 
 ## CI/CD Pipeline Overview
 
@@ -53,8 +33,11 @@ Azure Resource Group + Hardened Storage Account
 - Configuration validation
 - Execution plan preview
 - Security scanning with `Checkov`
+- IaC misconfiguration scanning with `Trivy`
+- Python-based orchestration layer for normalized reporting and severity-aware CI enforcement
+- Artifact publishing for `security-summary.md`, `checkov-report.json`, and `trivy-report.json`
 
-A failing Checkov check causes the workflow to exit non-zero, enforcing security as a merge gate.
+The Python orchestration layer enforces severity-aware CI security gates; failing Checkov checks or Trivy HIGH/CRITICAL findings cause the workflow to exit non-zero and block insecure changes from merging.
 
 ## Security Controls Enforced
 
