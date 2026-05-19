@@ -172,20 +172,7 @@ terraform destroy
 
 This pipeline integrates automated IaC security scanning with a small Python orchestration layer that parses scanner JSON outputs and enforces severity-aware CI gates.
 
-```mermaid
-flowchart LR
-	Dev[Developer Commit / PR] --> GH[GitHub Actions]
-	GH --> TF[Terraform plan + Checkov scan]
-	GH --> TR[Trivy IaC scan]
-	TF --> CJ[Checkov JSON report]
-	TR --> TJ[Trivy JSON report]
-	CJ --> ORC[Python Security Gate (orchestrator)]
-	TJ --> ORC
-	ORC --> ENF{Enforcement}
-	ENF -->|Fail| BLOCK[CI: block merge]
-	ENF -->|Pass| CONT[Continue pipeline]
-	ORC --> ART[Upload artifacts: security-summary.md, checkov-report.json, trivy-report.json]
-```
+![Mermaid Diagram](docs/images/mermaid-diagram.png)
 
 ![Security Pipeline Workflow](docs/images/20-security-pipeline-workflow.png)
 
