@@ -9,3 +9,9 @@ Notes
 # Generated security scan artifacts
 reports/checkov-report.json
 reports/trivy-report.jsonartifacts/sarif/*.sarif
+
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
