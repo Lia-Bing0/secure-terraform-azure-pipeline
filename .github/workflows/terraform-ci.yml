@@ -14,6 +14,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      security-events: write
 
     env:
       ARM_USE_OIDC: true
