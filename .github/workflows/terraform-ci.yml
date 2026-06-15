@@ -89,6 +89,11 @@ jobs:
         run: python scripts/sarif/generate_sarif.py
         working-directory: .
 
+      - name: Upload SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: artifacts/sarif/security-results.sarif
+
       - name: Upload security summary artifact
         uses: actions/upload-artifact@v4
         if: always()
