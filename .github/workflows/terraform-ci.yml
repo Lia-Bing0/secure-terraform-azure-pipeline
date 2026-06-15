@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - phase-4a-sarif-zap
   pull_request:
 
 jobs:
@@ -86,7 +87,7 @@ jobs:
         if: always()
         run: python scripts/sarif/generate_sarif.py
         working-directory: .
-        
+
       - name: Upload security summary artifact
         uses: actions/upload-artifact@v4
         if: always()
