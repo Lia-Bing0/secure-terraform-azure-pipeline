@@ -1,17 +1,31 @@
+# Terraform
 .terraform/
 *.tfstate
 *.tfstate.*
 terraform.tfvars
 *.tfvars
 crash.log
-Notes
+
+# Notes
+Notes/
 
 # Generated security scan artifacts
 reports/checkov-report.json
-reports/trivy-report.jsonartifacts/sarif/*.sarif
-
+reports/trivy-report.json
+artifacts/sarif/*.sarif
 
 # Python
 __pycache__/
 *.py[cod]
 *.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

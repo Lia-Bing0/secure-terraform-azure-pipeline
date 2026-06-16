@@ -1,0 +1,27 @@
+# Git
+.git
+.github
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Reports and artifacts
+reports/
+artifacts/
+
+# Documentation
+docs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# VS Code
+.vscode/
